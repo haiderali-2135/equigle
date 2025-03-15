@@ -7,6 +7,7 @@ import Agents from "@/components/pages/Agents";
 import About from "@/components/pages/About";
 import Services from "@/components/pages/services";
 import OtherProjects from "@/components/pages/OtherProjects";
+import Testimonials from "@/components/pages/Testimonials";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
         <Agents />
         <OtherProjects />
       </ProjectProvider>
+      <Testimonials />
     </>
   );
 }

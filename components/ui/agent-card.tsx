@@ -2,6 +2,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { JSX } from "react";
+import Link from "next/link";
 import {
   Drawer,
   DrawerClose,
@@ -13,7 +14,6 @@ import {
   DrawerTrigger,
 } from "./drawer";
 import { Button } from "./button";
-import DrawerCard from "./drawer-card";
 
 interface AgentCardProps {
   id: number;
@@ -57,34 +57,30 @@ export function AgentCard({
           </div>
           <h3 className="font-semibold text-lg mb-2 text-white">{title}</h3>
           <p className="text-sm text-white/90 flex-grow">{description}</p>
-          <Drawer>
-            <DrawerTrigger asChild>
-              <div
-                className="flex items-center mt-4 text-xs font-medium text-white hover:underline"
-                style={{ cursor: "pointer" }}
-              >
-                <span>Learn more</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="ml-1"
-                >
-                  <path d="M5 12h14"></path>
-                  <path d="m12 5 7 7-7 7"></path>
-                </svg>
-              </div>
-            </DrawerTrigger>
-            <DrawerContent className="min-h-26/30 max-h-26/30 overflow-hidden">
-              <DrawerCard id={id} />
-            </DrawerContent>
-          </Drawer>
+
+          <div
+            className="flex items-center mt-4 text-xs font-medium text-gray-400 hover:gap-1 hover:text-white"
+            style={{ cursor: "pointer" }}
+          >
+            <span>
+              <Link href={"/"}>Learn more</Link>{" "}
+            </span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="ml-0.5 mt-1"
+            >
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </div>
         </CardContent>
       </Card>
     </motion.div>

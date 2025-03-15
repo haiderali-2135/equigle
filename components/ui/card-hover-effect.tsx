@@ -15,7 +15,7 @@ export const HoverEffect = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 py-10 gap-2",
+        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 py-5 gap-2",
         className
       )}
     >
@@ -50,40 +50,21 @@ export const HoverEffect = ({
               />
             )}
           </AnimatePresence>
-          <Card>
-            <div className="flex items-center ">
-              <CardTitle>
-                <div className="flex flex-col items-center justify-center ">
-                  {item.icon && item.icon}
-                  {item.title || "Untitled"}
-                </div>
-              </CardTitle>
-            </div>
-            <CardDescription>
-              {item.description || "No description available"}
-              <div
-                className="flex items-center mt-2 text-xs font-medium text-white hover:underline"
-                style={{ cursor: "pointer" }}
-              >
-                <span>Learn more</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="ml-1"
-                >
-                  <path d="M5 12h14"></path>
-                  <path d="m12 5 7 7-7 7"></path>
-                </svg>
+          <Link href={"/"}>
+            <Card>
+              <div className="flex items-center ">
+                <CardTitle>
+                  <div className="flex flex-col items-center justify-center ">
+                    {item.icon && item.icon}
+                    {item.title || "Untitled"}
+                  </div>
+                </CardTitle>
               </div>
-            </CardDescription>
-          </Card>
+              <CardDescription>
+                {item.description || "No description available"}
+              </CardDescription>
+            </Card>
+          </Link>
         </div>
         // </Link>
       ))}
