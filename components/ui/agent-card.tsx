@@ -3,16 +3,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { JSX } from "react";
 import Link from "next/link";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "./drawer";
 import { Button } from "./button";
 
 interface AgentCardProps {
@@ -63,7 +53,7 @@ export function AgentCard({
             style={{ cursor: "pointer" }}
           >
             <span>
-              <Link href={"/"}>Learn more</Link>{" "}
+              <Link href={`/project/${id}`}>Learn more</Link>{" "}
             </span>
             <svg
               xmlns="http://www.w3.org/2000/svg"

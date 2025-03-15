@@ -50,7 +50,7 @@ export const HoverEffect = ({
               />
             )}
           </AnimatePresence>
-          <Link href={"/"}>
+          <Link href={`/project/${item.id}`}>
             <Card>
               <div className="flex items-center ">
                 <CardTitle>
