@@ -1,7 +1,7 @@
+"use client";
 import Link from "next/link";
 import {
   Mail,
-  Phone,
   MapPin,
   Linkedin,
   Instagram,
@@ -11,10 +11,24 @@ import {
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const navigation = [
+    { name: "Home", target: "hero" },
+    { name: "About", target: "about" },
+    { name: "Our-Agents", target: "agents" },
+    { name: "All Services", target: "services" },
+    { name: "Testimonials", target: "testimonials" },
+  ];
+
+  const scrollToSection = (target: string) => {
+    const section = document.getElementById(target);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
-    <footer className="bg-[#050505] border-t border-white/10 text-white snap-start">
-      <div className="container mx-auto px-4 py-6">
+    <footer className="bg-[#0a0a0a] border-t border-white/10 text-white snap-start">
+      <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="md:col-span-1">
@@ -56,58 +70,33 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+            <h4 className="text-lg font-semibold mb-4 text-purple-400">
+              Quick Links
+            </h4>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Services
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/our-agents"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Our Agents
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Contact
-                </Link>
-              </li>
+              {navigation.map((Item) => (
+                <li key={Item.name}>
+                  <button
+                    onClick={() => scrollToSection(Item.target)}
+                    className="text-gray-400 hover:text-white transition-colors"
+                    style={{ cursor: "pointer" }}
+                  >
+                    {Item.name}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Services */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Our Services</h4>
+            <h4 className="text-lg font-semibold mb-4 text-purple-400">
+              Our Services
+            </h4>
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/services"
+                  href="/"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   AI Agents
@@ -115,7 +104,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/services"
+                  href="/"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Web Development
@@ -123,7 +112,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/services"
+                  href="/"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Mobile Apps
@@ -131,7 +120,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/services"
+                  href="/"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Cloud Solutions
@@ -139,7 +128,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/services"
+                  href="/"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Data Analytics
@@ -150,7 +139,9 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
+            <h4 className="text-lg font-semibold mb-4 text-purple-400">
+              Contact Us
+            </h4>
             <ul className="space-y-3">
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 text-purple-400 mr-2 mt-0.5" />
@@ -161,9 +152,25 @@ export default function Footer() {
                 </span>
               </li>
               <li className="flex items-center">
-                <Phone className="h-5 w-5 text-purple-400 mr-2" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-5 w-5 text-purple-400 mr-2"
+                >
+                  <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" />
+                  <path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1Z" />
+                  <path d="M13.5 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1Z" />
+                  <path d="M9 13.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 0-1h-5a.5.5 0 0 0-.5.5Z" />
+                </svg>
                 <a
-                  href="tel:+15551234567"
+                  href="https://wa.me/15551234567"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   +1 (555) 123-4567

@@ -51,7 +51,7 @@ export default function ProjectPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#0a0a0a] text-white snap-start">
       {/* Hero Section */}
       <div className="relative h-[50vh] md:h-[60vh] w-full">
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#0a0a0a] z-10"></div>

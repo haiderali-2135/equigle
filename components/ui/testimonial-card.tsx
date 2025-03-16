@@ -1,6 +1,7 @@
+"use client";
+import { useState } from "react";
 import Image from "next/image";
 import { User } from "lucide-react";
-import icon from "@/assets/icon.png";
 
 interface Testimonial {
   name: string;
@@ -14,10 +15,12 @@ interface TestimonialCardProps {
 }
 
 function TestimonialCard({ testimonial }: TestimonialCardProps) {
+  const [imageError, setImageError] = useState(false);
+
   return (
     <div className="flex items-center justify-center mx-auto">
       <div className="flex flex-col max-w-sm mx-auto my-6 shadow-lg rounded-lg overflow-hidden transition-all duration-700">
-        <div className="px-4 py-10 bg-gray-900 text-white rounded-t-lg sm:px-8 md:px-12">
+        <div className="px-4 py-10 bg-[#0a0a0a] text-white rounded-t-lg sm:px-8 md:px-12 border border-white/10">
           <p className="relative px-6 py-1 text-sm italic text-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -40,14 +43,15 @@ function TestimonialCard({ testimonial }: TestimonialCardProps) {
             </svg>
           </p>
         </div>
-        <div className="flex flex-col items-center justify-center p-8 bg-violet-400 text-white">
-          <div className="relative w-16 h-16 mb-2 -mt-16 rounded-full overflow-hidden border-4 border-gray-900 shadow-lg">
-            {testimonial.imageUrl ? (
+        <div className="flex flex-col items-center justify-center p-8 bg-gradient-to-br from-purple-600 to-purple-800 text-white">
+          <div className="relative w-16 h-16 mb-2 -mt-16 rounded-full overflow-hidden border-4 border-[#0a0a0a] shadow-lg">
+            {!imageError ? (
               <Image
-                src={icon || testimonial.imageUrl}
+                src={testimonial.imageUrl || "/placeholder.svg"}
                 alt={testimonial.name}
                 fill
                 className="object-cover"
+                onError={() => setImageError(true)}
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-gray-700">

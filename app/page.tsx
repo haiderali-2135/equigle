@@ -16,15 +16,29 @@ export default function Home() {
   return (
     <>
       <main>
-        <HeroSection />
-        <About />
-        <Services />
+        <section id="hero">
+          <HeroSection />
+        </section>
+        <section id="about">
+          <About />
+        </section>
+        <section id="services">
+          <Services />
+        </section>
         <ProjectProvider>
-          <Agents />
-          <OtherProjects />
+          <section id="agents">
+            <Agents />
+          </section>
+          <section id="projects">
+            <OtherProjects />
+          </section>
         </ProjectProvider>
-        <Testimonials />
-        <Contact />
+        <section id="testimonials">
+          <Testimonials />
+        </section>
+        <section id="contact">
+          <Contact />
+        </section>
       </main>
     </>
   );

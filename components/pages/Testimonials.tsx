@@ -102,7 +102,7 @@ function TestimonialsSection() {
     <section className="min-h-screen bg-gray-100 dark:bg-gray-900 dark:text-gray-100 snap-start overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center mb-5 mt-5">
-          <h1 className="text-4xl font-semibold leading-none text-center mb-4">
+          <h1 className="text-[5vw] sm:text-[4vw] md:text-[3.5vw] font-bold mb-4 text-purple-900">
             What our customers are saying
           </h1>
         </div>
