@@ -8,15 +8,42 @@ import {
   Twitter,
   Github,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { urlToHttpOptions } from "url";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const [snapClass, setSnapClass] = useState("snap-none");
+  const currentPath = usePathname();
+
+  useEffect(() => {
+    // Set snap-none on initial load or route change
+    setSnapClass("snap-none");
+
+    // Delay changing to snap-start after 0.5 seconds
+    const timeout = setTimeout(() => {
+      setSnapClass("snap-start");
+    }, 500);
+
+    // Clear timeout on cleanup to avoid memory leaks
+    return () => clearTimeout(timeout);
+  }, []);
+
   const navigation = [
     { name: "Home", target: "hero" },
     { name: "About", target: "about" },
     { name: "Our-Agents", target: "agents" },
     { name: "All Services", target: "services" },
     { name: "Testimonials", target: "testimonials" },
+  ];
+
+  const services = [
+    { name: "AI Agents", target: "services" },
+    { name: "Web Development", target: "services" },
+    { name: "Mobile Apps", target: "services" },
+    { name: "Clound Solutions", target: "services" },
+    { name: "Data Analytics", target: "services" },
   ];
 
   const scrollToSection = (target: string) => {
@@ -27,8 +54,10 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#0a0a0a] border-t border-white/10 text-white snap-start">
-      <div className="container mx-auto px-4 py-12">
+    <footer
+      className={`bg-[#0a0a0a] border-t border-white/10 text-white ${snapClass}`}
+    >
+      <div className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="md:col-span-1">
@@ -94,46 +123,17 @@ export default function Footer() {
               Our Services
             </h4>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  AI Agents
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Web Development
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Mobile Apps
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Cloud Solutions
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Data Analytics
-                </Link>
-              </li>
+              {services.map((service) => (
+                <li key={service.name}>
+                  <button
+                    onClick={() => scrollToSection(service.target)}
+                    className="text-gray-400 hover:text-white transition-colors"
+                    style={{ cursor: "pointer" }}
+                  >
+                    {service.name}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 

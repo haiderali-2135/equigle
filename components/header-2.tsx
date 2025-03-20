@@ -10,18 +10,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-const navigation = [
-  { name: "About", target: "about" },
-  { name: "Our-Agents", target: "agents" },
-  { name: "All Services", target: "services" },
-  { name: "Testimonials", target: "testimonials" },
-];
+import { usePathname } from "next/navigation";
 
 export default function Header2() {
+  const navigation = [
+    { name: "About", target: "about" },
+    { name: "Our-Agents", target: "agents" },
+    { name: "All Services", target: "services" },
+    { name: "Testimonials", target: "testimonials" },
+  ];
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [toggle, setToggle] = useState(true);
+
+  const pathName = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {

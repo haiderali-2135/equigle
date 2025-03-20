@@ -52,14 +52,13 @@ export const HoverEffect = ({
           </AnimatePresence>
           <Link href={`/project/${item.id}`}>
             <Card>
-              <div className="flex items-center ">
-                <CardTitle>
-                  <div className="flex flex-col items-center justify-center ">
-                    {item.icon && item.icon}
-                    {item.title || "Untitled"}
-                  </div>
-                </CardTitle>
-              </div>
+              <CardTitle>
+                <div className="flex flex-col items-center justify-center ">
+                  {item.icon && item.icon}
+                </div>
+                <div className="">{item.title || "Untitled"}</div>
+              </CardTitle>
+
               <CardDescription>
                 {item.description || "No description available"}
               </CardDescription>

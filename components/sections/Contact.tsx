@@ -57,7 +57,7 @@ export default function Contact() {
   return (
     <section
       id="contact-section"
-      className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-[#0a0a0a] px-4 sm:px-6 md:px-8 snap-start py-16"
+      className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-[#0a0a0a] px-4 sm:px-6 md:px-8 snap-start py-4"
     >
       {/* Background gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#0a0a0a] to-purple-900/20 pointer-events-none"></div>
@@ -274,7 +274,10 @@ export default function Contact() {
                       Sending...
                     </span>
                   ) : (
-                    <span className="flex items-center">
+                    <span
+                      className="flex items-center"
+                      style={{ cursor: "pointer" }}
+                    >
                       Send Message
                       <Send className="ml-2 h-4 w-4" />
                     </span>
