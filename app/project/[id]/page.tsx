@@ -56,7 +56,6 @@ export default function ProjectPage() {
 
   return (
     <>
-      <Header />
       <div className="min-h-screen bg-[#0a0a0a] text-white snap-start">
         {/* Hero Section */}
         <div className="relative h-[50vh] md:h-[60vh] w-full">

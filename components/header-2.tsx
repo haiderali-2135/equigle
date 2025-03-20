@@ -10,22 +10,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
+const navigation = [
+  { name: "About", target: "about" },
+  { name: "Our-Agents", target: "agents" },
+  { name: "All Services", target: "services" },
+  { name: "Testimonials", target: "testimonials" },
+];
 export default function Header2() {
-  const navigation = [
-    { name: "About", target: "about" },
-    { name: "Our-Agents", target: "agents" },
-    { name: "All Services", target: "services" },
-    { name: "Testimonials", target: "testimonials" },
-  ];
-
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [toggle, setToggle] = useState(true);
 
-  const pathName = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,9 +60,14 @@ export default function Header2() {
 
   // Smooth scroll to section
   const scrollToSection = (target: string) => {
+    console.log("Target ---------------", target);
+
     const section = document.getElementById(target);
     if (section) {
+      // Smooth scroll to the section if it exists
       section.scrollIntoView({ behavior: "smooth" });
+    } else {
+      router.push(`/?scroll=${target}`);
     }
   };
 
@@ -108,9 +112,19 @@ export default function Header2() {
                 </DropdownMenuItem>
               ))}
               <DropdownMenuItem>
-                <Button className="w-full mt-2 bg-white text-black">
-                  Get Started
-                </Button>
+                <div className=" lg:flex lg:flex-1 lg:justify-end">
+                  <Button
+                    asChild
+                    className="bg-white/10 text-white backdrop-blur-sm"
+                  >
+                    <button
+                      onClick={() => scrollToSection("contact")}
+                      style={{ cursor: "pointer" }}
+                    >
+                      Contact
+                    </button>
+                  </Button>
+                </div>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -136,7 +150,12 @@ export default function Header2() {
             asChild
             className="bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm"
           >
-            <button onClick={() => scrollToSection("contact")}>Contact</button>
+            <button
+              onClick={() => scrollToSection("contact")}
+              style={{ cursor: "pointer" }}
+            >
+              Contact
+            </button>
           </Button>
         </div>
       </nav>
