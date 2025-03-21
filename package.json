@@ -15,9 +15,12 @@
     "@tabler/icons-react": "^3.31.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^16.4.7",
     "embla-carousel-react": "^8.5.2",
     "framer-motion": "^12.5.0",
     "lucide-react": "^0.479.0",
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.12.1",
     "motion": "^12.4.10",
     "next": "15.2.1",
     "react": "^19.0.0",
@@ -25,6 +28,7 @@
     "react-fast-marquee": "^1.6.5",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^11.1.0",
     "vaul": "^1.1.2"
   },
   "devDependencies": {

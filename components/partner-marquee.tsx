@@ -1,8 +1,57 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
-function LogoMarquee({ partners = defaultPartners }) {
+// Default partners that can be overridden
+interface Partner {
+  id: number;
+  name: string;
+  logo: string;
+}
+const Partners: Partner[] = [
+  {
+    id: 1,
+    name: "Partner 1",
+    logo: "https://banner2.cleanpng.com/20180610/jeu/aa8r2y6ex.webp",
+  },
+  {
+    id: 2,
+    name: "Partner 2",
+    logo: "https://banner2.cleanpng.com/20180610/jeu/aa8r2y6ex.webp",
+  },
+  {
+    id: 3,
+    name: "Partner 3",
+    logo: "https://banner2.cleanpng.com/20180610/jeu/aa8r2y6ex.webp",
+  },
+  {
+    id: 4,
+    name: "Partner 4",
+    logo: "https://banner2.cleanpng.com/20180610/jeu/aa8r2y6ex.webp",
+  },
+  {
+    id: 5,
+    name: "Partner 5",
+    logo: "https://banner2.cleanpng.com/20180610/jeu/aa8r2y6ex.webp",
+  },
+  {
+    id: 6,
+    name: "Partner 6",
+    logo: "https://banner2.cleanpng.com/20180610/jeu/aa8r2y6ex.webp",
+  },
+  {
+    id: 7,
+    name: "Partner 7",
+    logo: "https://banner2.cleanpng.com/20180610/jeu/aa8r2y6ex.webp",
+  },
+  {
+    id: 8,
+    name: "Partner 8",
+    logo: "https://banner2.cleanpng.com/20180610/jeu/aa8r2y6ex.webp",
+  },
+];
+
+function LogoMarquee({ partners = Partners }) {
   return (
     <div className="relative w-full flex flex-col items-center justify-center overflow-hidden">
       <div className="relative overflow-hidden w-full">
@@ -24,7 +73,10 @@ function LogoMarquee({ partners = defaultPartners }) {
             className="flex items-center gap-16 px-8"
           >
             {[...partners, ...partners].map((partner, idx) => (
-              <div key={`${partner.id}-${idx}-2`} className="w-[100px] h-[50px] flex items-center justify-center group">
+              <div
+                key={`${partner.id}-${idx}-2`}
+                className="w-[100px] h-[50px] flex items-center justify-center group"
+              >
                 <img
                   src={partner.logo || "/placeholder.svg"}
                   alt={partner.name}
@@ -36,20 +88,7 @@ function LogoMarquee({ partners = defaultPartners }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-// Default partners that can be overridden
-const defaultPartners = [
-  { id: 1, name: "Partner 1", logo: "https://banner2.cleanpng.com/20180610/jeu/aa8r2y6ex.webp" },
-  { id: 2, name: "Partner 2", logo: "https://banner2.cleanpng.com/20180610/jeu/aa8r2y6ex.webp" },
-  { id: 3, name: "Partner 3", logo: "https://banner2.cleanpng.com/20180610/jeu/aa8r2y6ex.webp" },
-  { id: 4, name: "Partner 4", logo: "https://banner2.cleanpng.com/20180610/jeu/aa8r2y6ex.webp" },
-  { id: 5, name: "Partner 5", logo: "https://banner2.cleanpng.com/20180610/jeu/aa8r2y6ex.webp" },
-  { id: 6, name: "Partner 6", logo: "https://banner2.cleanpng.com/20180610/jeu/aa8r2y6ex.webp" },
-  { id: 7, name: "Partner 7", logo: "https://banner2.cleanpng.com/20180610/jeu/aa8r2y6ex.webp" },
-  { id: 8, name: "Partner 8", logo: "https://banner2.cleanpng.com/20180610/jeu/aa8r2y6ex.webp" },
-]
-
-export default LogoMarquee
-
+export default LogoMarquee;

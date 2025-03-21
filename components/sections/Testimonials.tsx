@@ -10,7 +10,15 @@ import {
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const testimonials = [
+interface Testimonial {
+  id: number;
+  name: string;
+  company: string;
+  review: string;
+  imageUrl: string;
+}
+
+const testimonials: Testimonial[] = [
   {
     id: 1,
     name: "John Doe",

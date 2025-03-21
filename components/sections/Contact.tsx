@@ -7,6 +7,18 @@ import { motion } from "framer-motion";
 import { Mail, Send, Linkedin, Instagram, Twitter } from "lucide-react";
 import { useVisibility } from "@/hooks/usevisibility";
 
+interface Contact {
+  email: string;
+  email_link: string;
+  ph_number: string;
+  whatsapp_link: string;
+  linkedin_link: string;
+  instagram_link: string;
+  twitter_link: string;
+  address: string;
+  developer_link: string;
+}
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
