@@ -1,7 +1,7 @@
 import mongoose, { Schema, model } from "mongoose";
 
 const projectSchema = new Schema({
-  id: { type: String, required: true, unique: true },
+  P_id: { type: String, required: true, unique: true },
   title: { type: String, required: true },
   description: { type: String, required: true },
   icon: { type: String, required: true }, // Store icon as a string (URL or reference)
