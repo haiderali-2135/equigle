@@ -9,9 +9,11 @@ import {
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { NextResponse } from "next/server";
+import { Testimonial } from "@/model/Testimonial";
 
 interface Testimonial {
-  id: number;
+  T_id: number;
   name: string;
   company: string;
   review: string;
@@ -20,7 +22,7 @@ interface Testimonial {
 
 const testimonials: Testimonial[] = [
   {
-    id: 1,
+    T_id: 1,
     name: "John Doe",
     company: "Acme Corp",
     review:
@@ -29,7 +31,7 @@ const testimonials: Testimonial[] = [
       "https://images.unsplash.com/photo-1613323593608-abc90fec84ff?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
-    id: 2,
+    T_id: 2,
     name: "Jane Smith",
     company: "Tech Innovate",
     review:
@@ -37,7 +39,7 @@ const testimonials: Testimonial[] = [
     imageUrl: "https://source.unsplash.com/50x50/?portrait?2",
   },
   {
-    id: 3,
+    T_id: 3,
     name: "Samuel Green",
     company: "GreenTech",
     review:
@@ -45,7 +47,7 @@ const testimonials: Testimonial[] = [
     imageUrl: "https://source.unsplash.com/50x50/?portrait?3",
   },
   {
-    id: 4,
+    T_id: 4,
     name: "Alice Blue",
     company: "Creative Minds",
     review:
@@ -53,7 +55,7 @@ const testimonials: Testimonial[] = [
     imageUrl: "https://source.unsplash.com/50x50/?portrait?4",
   },
   {
-    id: 5,
+    T_id: 5,
     name: "Michael Black",
     company: "Blackstone Ltd",
     review:
@@ -65,6 +67,7 @@ const testimonials: Testimonial[] = [
 function TestimonialsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [api, setApi] = useState<any>(null);
+  const [Testimonials, setTestimonials] = useState([] as Testimonial[]);
 
   // Handle manual navigation
   const goToSlide = useCallback(
@@ -106,6 +109,22 @@ function TestimonialsSection() {
     };
   }, [api, handleSelect]);
 
+  const fetchTestimonials = async () => {
+    try {
+      const response = await fetch("/api/testimonials");
+      if (!response.ok) {
+        throw new Error("Failed to fetch Testimonials");
+      }
+      const data = await response.json();
+      setTestimonials(data);
+    } catch (error) {
+      console.error("Error fetching testimonials:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTestimonials();
+  }, []);
   return (
     <section className="min-h-screen bg-gray-100 dark:bg-gray-900 dark:text-gray-100 snap-start overflow-hidden">
       <div className="container mx-auto px-4">
@@ -127,9 +146,9 @@ function TestimonialsSection() {
             }}
           >
             <CarouselContent className="-ml-2 md:-ml-4">
-              {testimonials.map((testimonial, index) => (
+              {Testimonials.map((testimonial, index) => (
                 <CarouselItem
-                  key={testimonial.id}
+                  key={testimonial.T_id}
                   className="pl-2 md:pl-4 md:basis-2/3 lg:basis-1/2 transition-all duration-1000 ease-in-out"
                 >
                   <div

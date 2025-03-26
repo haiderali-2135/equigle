@@ -1,7 +1,7 @@
 import mongoose, { Schema, model } from "mongoose";
 
 const contactSchema = new Schema({
-  id: { type: String, required: true, unique: true },
+  C_id: { type: String, required: true, unique: true },
   email: { type: String, required: true },
   email_link: { type: String, required: true },
   ph_number: { type: String, required: true },

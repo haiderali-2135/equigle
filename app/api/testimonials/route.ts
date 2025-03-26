@@ -1,10 +1,13 @@
 import { Testimonial } from "@/model/Testimonial";
 import dbConnect from "@/lib/dbConnect";
 import { NextResponse } from "next/server";
+import { generateId } from "@/lib/generateId";
 
 export async function GET() {
   await dbConnect();
   try {
+    console.log("Got a get request");
+
     const testimonials = await Testimonial.find();
     return NextResponse.json(testimonials, { status: 200 });
   } catch (error: any) {
@@ -24,6 +27,11 @@ export async function POST(req: Request) {
   try {
     const data = await req.json();
     const newTestimonial = new Testimonial(data);
+
+    const newId = generateId();
+    console.log("Generated UUID for Testimonial:", newId);
+    newTestimonial.T_id = newId;
+
     await newTestimonial.save();
     return NextResponse.json(
       {
@@ -50,15 +58,14 @@ export async function DELETE(req: Request) {
     const { T_id } = await req.json();
     console.log(T_id);
 
-    const deletedTestimonial = await Testimonial.deleteOne({ T_id });
-    console.log(deletedTestimonial);
+    await Testimonial.deleteOne({ T_id });
 
     return NextResponse.json(
       {
         success: true,
         message: "Testimonial deleted successfully",
       },
-      { status: 204 }
+      { status: 200 }
     );
   } catch (error: any) {
     return NextResponse.json(
