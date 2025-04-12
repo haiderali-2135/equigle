@@ -1,7 +1,7 @@
 import React from "react";
 
-function addpartners() {
+function AddPartners() {
   return <div className="bg-red-500">adding partners</div>;
 }
 
-export default addpartners;
+export default AddPartners;

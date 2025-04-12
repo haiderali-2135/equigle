@@ -1,7 +1,7 @@
 import React from "react";
 
-function addTestimonials() {
+function AddTestimonials() {
   return <div className="bg-red-500">add Testimonials</div>;
 }
 
-export default addTestimonials;
+export default AddTestimonials;

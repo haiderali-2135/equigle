@@ -1,6 +1,6 @@
 import React from "react";
 
-function addprojects() {
+function AddProjects() {
   return (
     <div
       className="bg-red-500
@@ -11,4 +11,4 @@ function addprojects() {
   );
 }
 
-export default addprojects;
+export default AddProjects;
