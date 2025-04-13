@@ -52,7 +52,19 @@ export async function DELETE(req: Request) {
   await dbConnect();
   try {
     const { P_id } = await req.json();
-    await Project.deleteOne({ P_id });
+    const deletedProject = await Project.deleteOne({ P_id });
+    
+    if (deletedProject.deletedCount === 0) {
+      throw new Error("Project not found") 
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Project not found",
+        },
+        { status: 400 }
+      );
+    }
+  
     return NextResponse.json(
       {
         success: true,
