@@ -132,7 +132,6 @@ export default function ContactSection() {
     switch (field) {
       case "email":
         return !value.trim() || !emailPattern.test(value) ? "Please enter a valid email" : ""
-      case "email_link":
       case "whatsapp_link":
       case "linkedin_link":
       case "instagram_link":

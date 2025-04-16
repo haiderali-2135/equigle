@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { BarChart3, MessageSquare, Settings, LogOut, Home } from "lucide-react"
 import {
   Sidebar,
@@ -20,17 +20,38 @@ import {
 
 import "./admin.css"
 
+
 interface AdminSidebarProps {
   children: React.ReactNode
 }
 
 export default function AdminSidebar({ children }: AdminSidebarProps) {
-  const pathname = usePathname()
+  const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false)
-
+  const router = useRouter();
   useEffect(() => {
     setIsMounted(true)
   }, [])
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/auth/adminLogout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+
+      if (response.ok) {
+        // Redirect to home page after successful logout
+        router.push("/")
+      } else {
+        console.error("Logout failed")
+      }
+    } catch (error) {
+      console.error("Error during logout:", error)
+    }
+  }
 
   if (!isMounted) {
     return null
@@ -89,10 +110,13 @@ export default function AdminSidebar({ children }: AdminSidebarProps) {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href="/api/auth/adminLogout" className="hover:bg-purple-100 hover:text-purple-700">
+                <button
+                    onClick={handleLogout}
+                    className="flex w-full items-center gap-2 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                  >
                     <LogOut className="h-5 w-5" />
                     <span>Logout</span>
-                  </Link>
+                  </button>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>

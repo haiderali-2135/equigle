@@ -1,35 +1,35 @@
 "use client";
-import { ProjectProvider } from "@/lib/projects-context";
-import HeroSection from "@/components/sections/hero-section";
 
-import CenterLightBeam from "@/components/light-beam";
-import Agents from "@/components/sections/Agents";
+import { useEffect } from "react";
+import HeroSection from "@/components/sections/hero-section";
 import About from "@/components/sections/About";
 import Services from "@/components/sections/services";
+import Agents from "@/components/sections/Agents";
 import OtherProjects from "@/components/sections/OtherProjects";
 import Testimonials from "@/components/sections/Testimonials";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/footer";
-import Header2 from "@/components/header-2";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ProjectProvider } from "@/lib/projects-context";
 import { ContactProvider } from "@/lib/contact-context";
 
-
 export default function Home() {
-  const searchParams = useSearchParams();
-  const target = searchParams.get("scroll") || "hero";
-
   useEffect(() => {
-    // Wait until the DOM is ready, then scroll to the target section
-    const section = document.getElementById(target);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [target]);
+    const urlParams = new URLSearchParams(window.location.search);
+    const target = urlParams.get("scroll") || "hero";
+
+    const scrollToTarget = () => {
+      const section = document.getElementById(target);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    };
+
+    // Add small delay to wait for DOM/render
+    setTimeout(scrollToTarget, 300);
+  }, []);
+
   return (
-    <>
-      <ContactProvider>
+    <ContactProvider>
       <main>
         <section id="hero">
           <HeroSection />
@@ -56,7 +56,6 @@ export default function Home() {
         </section>
       </main>
       <Footer />
-      </ContactProvider>
-    </>
+    </ContactProvider>
   );
 }

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { AgentsCarousel } from "../agents-carousel";
 
 function Agents() {
-  const paragraph = `Importance of automation using agents: Lorem ipsum dolor, sit t quos illo. Earum reiciendis repudiandae, sint necessitatibus rerum, saepe voluptatem rem, veniam maxime natus est. Magnam, sed aperiam. Illo deserunt, libero necessitatibus quas expedita aperiam deleniti eos porro consequuntur facere, cupiditate consequatur accusamus obcaecati in nesciunt aliquam aliquid numquam? Aspernatur ut nisi recusandae magni modi quibusdam voluptatibus enim!`;
+  const paragraph = "Automation through intelligent agents revolutionizes how businesses handle repetitive tasks, data processing, and customer service. By reducing manual effort and minimizing errors, agents boost productivity, free up valuable time, and allow teams to focus on strategic initiatives. These systems adapt, learn, and optimize over time enabling smarter decision-making, seamless operations, and enhanced customer satisfaction. Whether streamlining workflows or delivering real-time insights, automation agents are key to scaling modern digital solutions effectively.";
 
   const [hasNotAnimated, setHasNotAnimated] = useState(true);
   const isVisible = useVisibility("agents-section");
