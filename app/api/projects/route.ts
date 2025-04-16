@@ -28,6 +28,8 @@ export async function POST(req: Request) {
     const data = await req.json();
     const newProject = new Project(data);
     newProject.P_id = generateId();
+    console.log(newProject);
+    
     await newProject.save();
     return NextResponse.json(
       {

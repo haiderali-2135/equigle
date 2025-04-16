@@ -1,15 +1,16 @@
 "use client"
 
 import type React from "react"
+
 import { useState, useEffect } from "react"
-import { Loader2, Mail, Phone, MapPin, Globe, Linkedin, Instagram, Twitter } from "lucide-react"
+import { Loader2, Mail, Phone, MapPin, Globe, Linkedin, Instagram, Twitter, Pencil, Check, X } from "lucide-react"
+import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { toast } from "sonner"
 
 interface ContactInfo {
   C_id: string
@@ -24,34 +25,65 @@ interface ContactInfo {
   developer_link: string
 }
 
+type FieldName = keyof Omit<ContactInfo, "C_id">
+
 export default function ContactSection() {
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState("")
-  const [isEditing, setIsEditing] = useState(false)
+
+  // Track which fields are being edited
+  const [editingFields, setEditingFields] = useState<Record<FieldName, boolean>>({
+    email: false,
+    email_link: false,
+    ph_number: false,
+    whatsapp_link: false,
+    linkedin_link: false,
+    instagram_link: false,
+    twitter_link: false,
+    address: false,
+    developer_link: false,
+  })
 
   // Form state
-  const [email, setEmail] = useState("")
-  const [emailLink, setEmailLink] = useState("")
-  const [phNumber, setPhNumber] = useState("")
-  const [whatsappLink, setWhatsappLink] = useState("")
-  const [linkedinLink, setLinkedinLink] = useState("")
-  const [instagramLink, setInstagramLink] = useState("")
-  const [twitterLink, setTwitterLink] = useState("")
-  const [address, setAddress] = useState("")
-  const [developerLink, setDeveloperLink] = useState("")
+  const [formValues, setFormValues] = useState<Record<FieldName, string>>({
+    email: "",
+    email_link: "",
+    ph_number: "",
+    whatsapp_link: "",
+    linkedin_link: "",
+    instagram_link: "",
+    twitter_link: "",
+    address: "",
+    developer_link: "",
+  })
+
+  // Original values (for canceling edits)
+  const [originalValues, setOriginalValues] = useState<Record<FieldName, string>>({
+    email: "",
+    email_link: "",
+    ph_number: "",
+    whatsapp_link: "",
+    linkedin_link: "",
+    instagram_link: "",
+    twitter_link: "",
+    address: "",
+    developer_link: "",
+  })
 
   // Form validation errors
-  const [emailError, setEmailError] = useState("")
-  const [emailLinkError, setEmailLinkError] = useState("")
-  const [phNumberError, setPhNumberError] = useState("")
-  const [whatsappLinkError, setWhatsappLinkError] = useState("")
-  const [linkedinLinkError, setLinkedinLinkError] = useState("")
-  const [instagramLinkError, setInstagramLinkError] = useState("")
-  const [twitterLinkError, setTwitterLinkError] = useState("")
-  const [addressError, setAddressError] = useState("")
-  const [developerLinkError, setDeveloperLinkError] = useState("")
+  const [fieldErrors, setFieldErrors] = useState<Record<FieldName, string>>({
+    email: "",
+    email_link: "",
+    ph_number: "",
+    whatsapp_link: "",
+    linkedin_link: "",
+    instagram_link: "",
+    twitter_link: "",
+    address: "",
+    developer_link: "",
+  })
 
   const fetchContactInfo = async () => {
     try {
@@ -60,21 +92,26 @@ export default function ContactSection() {
       if (!response.ok) {
         throw new Error("Failed to fetch contact information")
       }
-      const data = await response.json()
+      const { data } = await response.json()
 
-      if (data && data.length > 0) {
-        setContactInfo(data[0])
+      if (data) {
+        setContactInfo(data)
 
-        // Set form values
-        setEmail(data[0].email || "")
-        setEmailLink(data[0].email_link || "")
-        setPhNumber(data[0].ph_number || "")
-        setWhatsappLink(data[0].whatsapp_link || "")
-        setLinkedinLink(data[0].linkedin_link || "")
-        setInstagramLink(data[0].instagram_link || "")
-        setTwitterLink(data[0].twitter_link || "")
-        setAddress(data[0].address || "")
-        setDeveloperLink(data[0].developer_link || "")
+        // Set form values and original values
+        const values = {
+          email: data.email || "",
+          email_link: data.email_link || "",
+          ph_number: data.ph_number || "",
+          whatsapp_link: data.whatsapp_link || "",
+          linkedin_link: data.linkedin_link || "",
+          instagram_link: data.instagram_link || "",
+          twitter_link: data.twitter_link || "",
+          address: data.address || "",
+          developer_link: data.developer_link || "",
+        }
+
+        setFormValues(values)
+        setOriginalValues(values)
       }
     } catch (error) {
       console.error("Error fetching contact information:", error)
@@ -88,352 +125,325 @@ export default function ContactSection() {
     fetchContactInfo()
   }, [])
 
-  const validateForm = () => {
-    let isValid = true
+  const validateField = (field: FieldName, value: string): string => {
     const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-    // Validate email
-    if (!email.trim() || !emailPattern.test(email)) {
-      setEmailError("Please enter a valid email")
-      isValid = false
-    } else {
-      setEmailError("")
+    switch (field) {
+      case "email":
+        return !value.trim() || !emailPattern.test(value) ? "Please enter a valid email" : ""
+      case "email_link":
+      case "whatsapp_link":
+      case "linkedin_link":
+      case "instagram_link":
+      case "twitter_link":
+      case "developer_link":
+        return !value.trim() || !urlPattern.test(value) ? "Please enter a valid URL" : ""
+      case "ph_number":
+        return !value.trim() || value.length < 5 ? "Please enter a valid phone number" : ""
+      case "address":
+        return !value.trim() || value.length < 5 ? "Address must be at least 5 characters" : ""
+      default:
+        return ""
     }
-
-    // Validate email link
-    if (!emailLink.trim() || !urlPattern.test(emailLink)) {
-      setEmailLinkError("Please enter a valid URL")
-      isValid = false
-    } else {
-      setEmailLinkError("")
-    }
-
-    // Validate phone number
-    if (!phNumber.trim() || phNumber.length < 5) {
-      setPhNumberError("Please enter a valid phone number")
-      isValid = false
-    } else {
-      setPhNumberError("")
-    }
-
-    // Validate WhatsApp link
-    if (!whatsappLink.trim() || !urlPattern.test(whatsappLink)) {
-      setWhatsappLinkError("Please enter a valid URL")
-      isValid = false
-    } else {
-      setWhatsappLinkError("")
-    }
-
-    // Validate LinkedIn link
-    if (!linkedinLink.trim() || !urlPattern.test(linkedinLink)) {
-      setLinkedinLinkError("Please enter a valid URL")
-      isValid = false
-    } else {
-      setLinkedinLinkError("")
-    }
-
-    // Validate Instagram link
-    if (!instagramLink.trim() || !urlPattern.test(instagramLink)) {
-      setInstagramLinkError("Please enter a valid URL")
-      isValid = false
-    } else {
-      setInstagramLinkError("")
-    }
-
-    // Validate Twitter link
-    if (!twitterLink.trim() || !urlPattern.test(twitterLink)) {
-      setTwitterLinkError("Please enter a valid URL")
-      isValid = false
-    } else {
-      setTwitterLinkError("")
-    }
-
-    // Validate address
-    if (!address.trim() || address.length < 5) {
-      setAddressError("Address must be at least 5 characters")
-      isValid = false
-    } else {
-      setAddressError("")
-    }
-
-    // Validate developer link
-    if (!developerLink.trim() || !urlPattern.test(developerLink)) {
-      setDeveloperLinkError("Please enter a valid URL")
-      isValid = false
-    } else {
-      setDeveloperLinkError("")
-    }
-
-    return isValid
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleEditField = (field: FieldName) => {
+    setEditingFields((prev) => ({
+      ...prev,
+      [field]: true,
+    }))
+  }
 
-    if (!validateForm()) {
+  const handleCancelEdit = (field: FieldName) => {
+    setEditingFields((prev) => ({
+      ...prev,
+      [field]: false,
+    }))
+
+    // Reset to original value
+    setFormValues((prev) => ({
+      ...prev,
+      [field]: originalValues[field],
+    }))
+
+    // Clear error
+    setFieldErrors((prev) => ({
+      ...prev,
+      [field]: "",
+    }))
+  }
+
+  const handleFieldChange = (field: FieldName, value: string) => {
+    setFormValues((prev) => ({
+      ...prev,
+      [field]: value,
+    }))
+  }
+
+  const handleSaveField = async (field: FieldName) => {
+    // Validate the field
+    const error = validateField(field, formValues[field])
+
+    if (error) {
+      setFieldErrors((prev) => ({
+        ...prev,
+        [field]: error,
+      }))
       return
     }
 
     try {
       setIsSubmitting(true)
-      setError("")
+      setFieldErrors((prev) => ({
+        ...prev,
+        [field]: "",
+      }))
 
-      const contactData = {
-        email,
-        email_link: emailLink,
-        ph_number: phNumber,
-        whatsapp_link: whatsappLink,
-        linkedin_link: linkedinLink,
-        instagram_link: instagramLink,
-        twitter_link: twitterLink,
-        address,
-        developer_link: developerLink,
+      if (!contactInfo) {
+        throw new Error("No contact information found to update")
       }
 
-      // Handle both update and create scenarios
-      const url = contactInfo ? `/api/contact?id=${contactInfo.C_id}` : "/api/contact"
+      // Prepare data for update - only update the specific field
+      const updateData = {
+        C_id: contactInfo.C_id,
+        [field]: formValues[field],
+      }
 
-      const response = await fetch(url, {
+      const response = await fetch(`/api/contact`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(contactData),
+        body: JSON.stringify(updateData),
       })
 
       if (!response.ok) {
-        throw new Error("Failed to update contact information")
+        throw new Error(`Failed to update ${field.replace("_", " ")}`)
       }
 
-      toast.success("Contact information updated", {
-        description: "Your contact information has been updated successfully.",
+      toast.success("Field updated", {
+        description: `${field.replace("_", " ")} has been updated successfully.`,
       })
 
-      setIsEditing(false)
-      fetchContactInfo()
+      // Update original value
+      setOriginalValues((prev) => ({
+        ...prev,
+        [field]: formValues[field],
+      }))
+
+      // Exit edit mode
+      setEditingFields((prev) => ({
+        ...prev,
+        [field]: false,
+      }))
     } catch (error) {
-      console.error("Error updating contact information:", error)
-      setError("Failed to update contact information. Please try again.")
+      console.error(`Error updating ${field}:`, error)
+      setFieldErrors((prev) => ({
+        ...prev,
+        [field]: `Failed to update ${field.replace("_", " ")}`,
+      }))
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  const cancelEdit = () => {
-    setIsEditing(false)
+  // Function to render a field with its edit controls
+  const renderField = (field: FieldName, label: string, placeholder: string, icon?: React.ReactNode) => {
+    const isEditing = editingFields[field]
+    const value = formValues[field]
+    const error = fieldErrors[field]
 
-    if (contactInfo) {
-      // Reset form to original values
-      setEmail(contactInfo.email || "")
-      setEmailLink(contactInfo.email_link || "")
-      setPhNumber(contactInfo.ph_number || "")
-      setWhatsappLink(contactInfo.whatsapp_link || "")
-      setLinkedinLink(contactInfo.linkedin_link || "")
-      setInstagramLink(contactInfo.instagram_link || "")
-      setTwitterLink(contactInfo.twitter_link || "")
-      setAddress(contactInfo.address || "")
-      setDeveloperLink(contactInfo.developer_link || "")
-
-      // Clear errors
-      setEmailError("")
-      setEmailLinkError("")
-      setPhNumberError("")
-      setWhatsappLinkError("")
-      setLinkedinLinkError("")
-      setInstagramLinkError("")
-      setTwitterLinkError("")
-      setAddressError("")
-      setDeveloperLinkError("")
-    }
+    return (
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <Label htmlFor={field} className="flex items-center gap-2">
+            {icon && icon}
+            {label}
+          </Label>
+          <div className="flex gap-1">
+            {isEditing ? (
+              <>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="ghost"
+                  className="h-7 w-7 p-0 text-green-600"
+                  onClick={() => handleSaveField(field)}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="ghost"
+                  className="h-7 w-7 p-0 text-red-600"
+                  onClick={() => handleCancelEdit(field)}
+                  disabled={isSubmitting}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </>
+            ) : (
+              <Button
+                type="button"
+                size="sm"
+                variant="ghost"
+                className="h-7 w-7 p-0 text-gray-600 hover:text-gray-900"
+                onClick={() => handleEditField(field)}
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+        </div>
+        <div className="relative">
+          <Input
+            id={field}
+            placeholder={placeholder}
+            value={value}
+            onChange={(e) => handleFieldChange(field, e.target.value)}
+            disabled={!isEditing}
+            className="border-gray-200 focus-visible:ring-purple-500"
+          />
+          {field === "address" && isEditing && (
+            <div className="absolute bottom-2 right-2 text-xs text-gray-500">{value.length} characters</div>
+          )}
+        </div>
+        {error && <p className="text-sm text-red-500">{error}</p>}
+      </div>
+    )
   }
 
   return (
     <div className="space-y-6">
-      <Card className="border-equigle-200">
+      <Card className="border-gray-200">
         <CardHeader>
-          <CardTitle className="text-equigle-800">Contact Information</CardTitle>
+          <CardTitle className="text-purple-800">Contact Information</CardTitle>
           <CardDescription>Manage your contact details displayed on the website</CardDescription>
         </CardHeader>
         <CardContent>
           {isLoading ? (
             <div className="flex h-40 items-center justify-center">
-              <Loader2 className="h-6 w-6 animate-spin text-equigle-600" />
+              <Loader2 className="h-6 w-6 animate-spin text-purple-600" />
             </div>
           ) : error ? (
             <Alert variant="destructive">
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-6">
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="flex items-center gap-2">
-                      <Mail className="h-4 w-4 text-equigle-600" /> Email Address
-                    </Label>
-                    <Input
-                      id="email"
-                      placeholder="contact@equigle.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      disabled={!isEditing}
-                      className="border-equigle-200 focus-visible:ring-equigle-500"
-                    />
-                    {emailError && <p className="text-sm text-red-500">{emailError}</p>}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="emailLink">Email Link</Label>
-                    <Input
-                      id="emailLink"
-                      placeholder="mailto:contact@equigle.com"
-                      value={emailLink}
-                      onChange={(e) => setEmailLink(e.target.value)}
-                      disabled={!isEditing}
-                      className="border-equigle-200 focus-visible:ring-equigle-500"
-                    />
-                    {emailLinkError && <p className="text-sm text-red-500">{emailLinkError}</p>}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="phNumber" className="flex items-center gap-2">
-                      <Phone className="h-4 w-4 text-equigle-600" /> Phone Number
-                    </Label>
-                    <Input
-                      id="phNumber"
-                      placeholder="+1 (555) 123-4567"
-                      value={phNumber}
-                      onChange={(e) => setPhNumber(e.target.value)}
-                      disabled={!isEditing}
-                      className="border-equigle-200 focus-visible:ring-equigle-500"
-                    />
-                    {phNumberError && <p className="text-sm text-red-500">{phNumberError}</p>}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="whatsappLink">WhatsApp Link</Label>
-                    <Input
-                      id="whatsappLink"
-                      placeholder="https://wa.me/15551234567"
-                      value={whatsappLink}
-                      onChange={(e) => setWhatsappLink(e.target.value)}
-                      disabled={!isEditing}
-                      className="border-equigle-200 focus-visible:ring-equigle-500"
-                    />
-                    {whatsappLinkError && <p className="text-sm text-red-500">{whatsappLinkError}</p>}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="address" className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-equigle-600" /> Address
-                    </Label>
-                    <Input
-                      id="address"
-                      placeholder="123 Main St, City, Country"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      disabled={!isEditing}
-                      className="border-equigle-200 focus-visible:ring-equigle-500"
-                    />
-                    {addressError && <p className="text-sm text-red-500">{addressError}</p>}
-                  </div>
+                  {renderField(
+                    "email",
+                    "Email Address",
+                    "contact@example.com",
+                    <Mail className="h-4 w-4 text-purple-600" />,
+                  )}
+                  {renderField("email_link", "Email Link", "mailto:contact@example.com")}
+                  {renderField(
+                    "ph_number",
+                    "Phone Number",
+                    "+1 (555) 123-4567",
+                    <Phone className="h-4 w-4 text-purple-600" />,
+                  )}
+                  {renderField("whatsapp_link", "WhatsApp Link", "https://wa.me/15551234567")}
+                  {renderField(
+                    "address",
+                    "Address",
+                    "123 Main St, City, Country",
+                    <MapPin className="h-4 w-4 text-purple-600" />,
+                  )}
                 </div>
 
                 <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="linkedinLink" className="flex items-center gap-2">
-                      <Linkedin className="h-4 w-4 text-equigle-600" /> LinkedIn
-                    </Label>
-                    <Input
-                      id="linkedinLink"
-                      placeholder="https://linkedin.com/company/equigle"
-                      value={linkedinLink}
-                      onChange={(e) => setLinkedinLink(e.target.value)}
-                      disabled={!isEditing}
-                      className="border-equigle-200 focus-visible:ring-equigle-500"
-                    />
-                    {linkedinLinkError && <p className="text-sm text-red-500">{linkedinLinkError}</p>}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="instagramLink" className="flex items-center gap-2">
-                      <Instagram className="h-4 w-4 text-equigle-600" /> Instagram
-                    </Label>
-                    <Input
-                      id="instagramLink"
-                      placeholder="https://instagram.com/equigle"
-                      value={instagramLink}
-                      onChange={(e) => setInstagramLink(e.target.value)}
-                      disabled={!isEditing}
-                      className="border-equigle-200 focus-visible:ring-equigle-500"
-                    />
-                    {instagramLinkError && <p className="text-sm text-red-500">{instagramLinkError}</p>}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="twitterLink" className="flex items-center gap-2">
-                      <Twitter className="h-4 w-4 text-equigle-600" /> Twitter
-                    </Label>
-                    <Input
-                      id="twitterLink"
-                      placeholder="https://twitter.com/equigle"
-                      value={twitterLink}
-                      onChange={(e) => setTwitterLink(e.target.value)}
-                      disabled={!isEditing}
-                      className="border-equigle-200 focus-visible:ring-equigle-500"
-                    />
-                    {twitterLinkError && <p className="text-sm text-red-500">{twitterLinkError}</p>}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="developerLink" className="flex items-center gap-2">
-                      <Globe className="h-4 w-4 text-equigle-600" /> Developer Website
-                    </Label>
-                    <Input
-                      id="developerLink"
-                      placeholder="https://developer.equigle.com"
-                      value={developerLink}
-                      onChange={(e) => setDeveloperLink(e.target.value)}
-                      disabled={!isEditing}
-                      className="border-equigle-200 focus-visible:ring-equigle-500"
-                    />
-                    {developerLinkError && <p className="text-sm text-red-500">{developerLinkError}</p>}
-                  </div>
+                  {renderField(
+                    "linkedin_link",
+                    "LinkedIn",
+                    "https://linkedin.com/company/example",
+                    <Linkedin className="h-4 w-4 text-purple-600" />,
+                  )}
+                  {renderField(
+                    "instagram_link",
+                    "Instagram",
+                    "https://instagram.com/example",
+                    <Instagram className="h-4 w-4 text-purple-600" />,
+                  )}
+                  {renderField(
+                    "twitter_link",
+                    "Twitter",
+                    "https://twitter.com/example",
+                    <Twitter className="h-4 w-4 text-purple-600" />,
+                  )}
+                  {renderField(
+                    "developer_link",
+                    "Developer Website",
+                    "https://developer.example.com",
+                    <Globe className="h-4 w-4 text-purple-600" />,
+                  )}
                 </div>
               </div>
 
-              <div className="flex gap-2">
-                {isEditing ? (
-                  <>
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="bg-equigle-600 hover:bg-equigle-700 text-white"
-                    >
-                      {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                      Save Changes
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={cancelEdit}
-                      className="border-equigle-300 hover:bg-equigle-100"
-                    >
-                      Cancel
-                    </Button>
-                  </>
-                ) : (
-                  <Button
-                    type="button"
-                    onClick={() => setIsEditing(true)}
-                    className="bg-equigle-600 hover:bg-equigle-700 text-white"
-                  >
-                    Edit Contact Information
-                  </Button>
-                )}
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  type="button"
+                  onClick={() => {
+                    // Enable editing for all fields
+                    const allFields: Record<FieldName, boolean> = {
+                      email: true,
+                      email_link: true,
+                      ph_number: true,
+                      whatsapp_link: true,
+                      linkedin_link: true,
+                      instagram_link: true,
+                      twitter_link: true,
+                      address: true,
+                      developer_link: true,
+                    }
+                    setEditingFields(allFields)
+                  }}
+                  className="bg-purple-600 hover:bg-purple-700 text-white"
+                >
+                  Edit All Fields
+                </Button>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    // Reset all fields to original values and exit edit mode
+                    setFormValues(originalValues)
+                    setEditingFields({
+                      email: false,
+                      email_link: false,
+                      ph_number: false,
+                      whatsapp_link: false,
+                      linkedin_link: false,
+                      instagram_link: false,
+                      twitter_link: false,
+                      address: false,
+                      developer_link: false,
+                    })
+                    setFieldErrors({
+                      email: "",
+                      email_link: "",
+                      ph_number: "",
+                      whatsapp_link: "",
+                      linkedin_link: "",
+                      instagram_link: "",
+                      twitter_link: "",
+                      address: "",
+                      developer_link: "",
+                    })
+                  }}
+                  className="border-gray-300 hover:bg-gray-50"
+                >
+                  Cancel All Edits
+                </Button>
               </div>
-            </form>
+            </div>
           )}
         </CardContent>
       </Card>

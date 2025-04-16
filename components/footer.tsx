@@ -11,11 +11,13 @@ import {
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { urlToHttpOptions } from "url";
+import { useContactContext } from "@/lib/contact-context";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const [snapClass, setSnapClass] = useState("snap-none");
   const currentPath = usePathname();
+   const contactInfo = useContactContext()
 
   useEffect(() => {
     // Set snap-none on initial load or route change
@@ -68,7 +70,7 @@ export default function Footer() {
             </p>
             <div className="flex space-x-3">
               <a
-                href="https://linkedin.com"
+                href={contactInfo?.linkedin_link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 bg-white/5 rounded-full hover:bg-purple-900/30 transition-colors"
@@ -77,7 +79,7 @@ export default function Footer() {
                 <Linkedin className="h-4 w-4" />
               </a>
               <a
-                href="https://instagram.com"
+                href={contactInfo?.instagram_link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 bg-white/5 rounded-full hover:bg-purple-900/30 transition-colors"
@@ -86,7 +88,7 @@ export default function Footer() {
                 <Instagram className="h-4 w-4" />
               </a>
               <a
-                href="https://twitter.com"
+                href={contactInfo?.twitter_link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 bg-white/5 rounded-full hover:bg-purple-900/30 transition-colors"
@@ -146,9 +148,7 @@ export default function Footer() {
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 text-purple-400 mr-2 mt-0.5" />
                 <span className="text-gray-400">
-                  123 Innovation Drive
-                  <br />
-                  Tech City, TC 10101
+                  {contactInfo?.address}
                 </span>
               </li>
               <li className="flex items-center">
@@ -168,12 +168,12 @@ export default function Footer() {
                   <path d="M9 13.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 0-1h-5a.5.5 0 0 0-.5.5Z" />
                 </svg>
                 <a
-                  href="https://wa.me/15551234567"
+                  href={contactInfo?.whatsapp_link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  +1 (555) 123-4567
+                  {contactInfo?.ph_number}
                 </a>
               </li>
               <li className="flex items-center">
@@ -182,7 +182,7 @@ export default function Footer() {
                   href="mailto:contact@equigle.com"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  contact@equigle.com
+                  {contactInfo?.email}
                 </a>
               </li>
             </ul>

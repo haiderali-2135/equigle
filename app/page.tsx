@@ -12,14 +12,16 @@ import Contact from "@/components/sections/Contact";
 import Footer from "@/components/footer";
 import Header2 from "@/components/header-2";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { ContactProvider } from "@/lib/contact-context";
+
 
 export default function Home() {
   const searchParams = useSearchParams();
   const target = searchParams.get("scroll") || "hero";
+
   useEffect(() => {
     // Wait until the DOM is ready, then scroll to the target section
-
     const section = document.getElementById(target);
     if (section) {
       section.scrollIntoView({ behavior: "smooth" });
@@ -27,6 +29,7 @@ export default function Home() {
   }, [target]);
   return (
     <>
+      <ContactProvider>
       <main>
         <section id="hero">
           <HeroSection />
@@ -53,6 +56,7 @@ export default function Home() {
         </section>
       </main>
       <Footer />
+      </ContactProvider>
     </>
   );
 }

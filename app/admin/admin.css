@@ -1,0 +1,32 @@
+/* Admin dashboard specific styles */
+.recharts-wrapper {
+    max-width: 100%;
+    height: auto !important;
+    overflow: visible;
+  }
+  
+  .recharts-surface {
+    overflow: visible;
+  }
+  
+  .recharts-tooltip-wrapper {
+    z-index: 10;
+  }
+  
+  /* Chart variables */
+  :root {
+    --chart-1: #9333ea; /* Purple-600 */
+    --chart-2: #a855f7; /* Purple-500 */
+  }
+  
+  /* Ensure responsive behavior */
+  @media (max-width: 768px) {
+    .recharts-text {
+      font-size: 10px;
+    }
+  
+    .recharts-cartesian-axis-tick-value {
+      font-size: 10px;
+    }
+  }
+  

@@ -67,22 +67,22 @@ export default function MessagesPage() {
   const messagesContent = (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight text-equigle-800">Messages</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-purple-800">Messages</h1>
       </div>
 
-      <Card className="border-equigle-200">
+      <Card className="border-purple-200">
         <CardHeader>
-          <CardTitle className="text-equigle-800">Received Messages</CardTitle>
+          <CardTitle className="text-purple-800">Received Messages</CardTitle>
           <CardDescription>View and manage messages from your website visitors</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="mb-4 flex items-center gap-2">
-            <Search className="h-4 w-4 text-equigle-500" />
+            <Search className="h-4 w-4 text-purple-500" />
             <Input
               placeholder="Search messages..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="max-w-sm border-equigle-200 focus-visible:ring-equigle-500"
+              className="max-w-sm border-purple-200 focus-visible:ring-purple-500"
             />
           </div>
 
@@ -97,9 +97,9 @@ export default function MessagesPage() {
               </div>
             </div>
           ) : (
-            <div className="rounded-md border border-equigle-200">
+            <div className="rounded-md border border-purple-200">
               <Table>
-                <TableHeader className="bg-equigle-50">
+                <TableHeader className="bg-purple-50">
                   <TableRow>
                     <TableHead className="w-[250px]">Sender</TableHead>
                     <TableHead className="hidden md:table-cell">Email</TableHead>
@@ -111,14 +111,14 @@ export default function MessagesPage() {
                   {filteredMessages.map((message) => (
                     <TableRow
                       key={message.M_id}
-                      className="group cursor-pointer hover:bg-equigle-50"
+                      className="group cursor-pointer hover:bg-purple-50"
                       onClick={() => handleViewMessage(message)}
                     >
                       <TableCell className="font-medium">{message.name}</TableCell>
                       <TableCell className="hidden md:table-cell">
                         <a
                           href={`mailto:${message.email}`}
-                          className="text-equigle-600 hover:underline"
+                          className="text-purple-600 hover:underline"
                           onClick={(e) => e.stopPropagation()}
                         >
                           {message.email}
@@ -128,7 +128,7 @@ export default function MessagesPage() {
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                            <Button variant="ghost" size="icon" className="hover:bg-equigle-100 hover:text-equigle-700">
+                            <Button variant="ghost" size="icon" className="hover:bg-purple-100 hover:text-purple-700">
                               <MoreHorizontal className="h-4 w-4" />
                               <span className="sr-only">Open menu</span>
                             </Button>
@@ -140,7 +140,7 @@ export default function MessagesPage() {
                                 e.stopPropagation()
                                 handleViewMessage(message)
                               }}
-                              className="hover:bg-equigle-50 hover:text-equigle-700"
+                              className="hover:bg-purple-50 hover:text-purple-700"
                             >
                               View details
                             </DropdownMenuItem>
@@ -149,7 +149,7 @@ export default function MessagesPage() {
                                 e.stopPropagation()
                                 window.location.href = `mailto:${message.email}`
                               }}
-                              className="hover:bg-equigle-50 hover:text-equigle-700"
+                              className="hover:bg-purple-50 hover:text-purple-700"
                             >
                               Reply via email
                             </DropdownMenuItem>
@@ -175,20 +175,20 @@ export default function MessagesPage() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-equigle-800">Message Details</DialogTitle>
+            <DialogTitle className="text-purple-800">Message Details</DialogTitle>
             <DialogDescription>
               From {selectedMessage?.name} ({selectedMessage?.email})
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
-            <div className="rounded-lg bg-equigle-50 p-4">
+            <div className="rounded-lg bg-purple-50 p-4">
               <p className="whitespace-pre-wrap">{selectedMessage?.message}</p>
             </div>
             <div className="flex items-center gap-4">
               <Button
                 variant="outline"
                 size="sm"
-                className="gap-1 border-equigle-300 hover:bg-equigle-100 hover:text-equigle-700"
+                className="gap-1 border-purple-300 hover:bg-purple-100 hover:text-purple-700"
                 onClick={() => (window.location.href = `mailto:${selectedMessage?.email}`)}
               >
                 <Mail className="h-4 w-4" />

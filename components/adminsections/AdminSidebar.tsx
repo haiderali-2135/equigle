@@ -18,6 +18,8 @@ import {
   SidebarInset,
 } from "@/components/ui/sidebar"
 
+import "./admin.css"
+
 interface AdminSidebarProps {
   children: React.ReactNode
 }
@@ -37,13 +39,13 @@ export default function AdminSidebar({ children }: AdminSidebarProps) {
   return (
     <SidebarProvider>
       <div className="flex min-h-screen">
-        <Sidebar variant="sidebar" collapsible="icon" className="bg-sidebar text-sidebar-foreground">
-          <SidebarHeader className="flex items-center border-b border-sidebar-border px-4 py-2">
+        <Sidebar variant="sidebar" collapsible="icon" className="bg-gray-50 text-gray-900">
+          <SidebarHeader className="flex items-center border-b border-gray-200 px-4 py-2">
             <Link href="/admin" className="flex items-center gap-2">
-              <div className="rounded-full bg-background p-1">
-                <Home className="h-5 w-5 text-foreground" />
+              <div className="rounded-full bg-purple-100 p-1">
+                <Home className="h-5 w-5 text-purple-600" />
               </div>
-              <span className="font-semibold text-sidebar-foreground">Equigle Admin</span>
+              <span className="font-semibold text-gray-900">Equigle Admin</span>
             </Link>
           </SidebarHeader>
           <SidebarContent>
@@ -52,7 +54,7 @@ export default function AdminSidebar({ children }: AdminSidebarProps) {
                 <SidebarMenuButton asChild isActive={pathname === "/admin"}>
                   <Link
                     href="/admin"
-                    className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground"
+                    className="hover:bg-purple-100 hover:text-purple-700 data-[active=true]:bg-purple-100 data-[active=true]:text-purple-700"
                   >
                     <BarChart3 className="h-5 w-5" />
                     <span>Dashboard</span>
@@ -63,7 +65,7 @@ export default function AdminSidebar({ children }: AdminSidebarProps) {
                 <SidebarMenuButton asChild isActive={pathname === "/admin/messages"}>
                   <Link
                     href="/admin/messages"
-                    className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground"
+                    className="hover:bg-purple-100 hover:text-purple-700 data-[active=true]:bg-purple-100 data-[active=true]:text-purple-700"
                   >
                     <MessageSquare className="h-5 w-5" />
                     <span>Messages</span>
@@ -74,7 +76,7 @@ export default function AdminSidebar({ children }: AdminSidebarProps) {
                 <SidebarMenuButton asChild isActive={pathname.startsWith("/admin/editsite")}>
                   <Link
                     href="/admin/editsite"
-                    className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground"
+                    className="hover:bg-purple-100 hover:text-purple-700 data-[active=true]:bg-purple-100 data-[active=true]:text-purple-700"
                   >
                     <Settings className="h-5 w-5" />
                     <span>Edit Site</span>
@@ -83,14 +85,11 @@ export default function AdminSidebar({ children }: AdminSidebarProps) {
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarContent>
-          <SidebarFooter className="border-t border-sidebar-border p-4">
+          <SidebarFooter className="border-t border-gray-200 p-4">
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link
-                    href="/api/auth/adminLogout"
-                    className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                  >
+                  <Link href="/api/auth/adminLogout" className="hover:bg-purple-100 hover:text-purple-700">
                     <LogOut className="h-5 w-5" />
                     <span>Logout</span>
                   </Link>

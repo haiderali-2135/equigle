@@ -6,18 +6,7 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Mail, Send, Linkedin, Instagram, Twitter } from "lucide-react";
 import { useVisibility } from "@/hooks/usevisibility";
-
-interface Contact {
-  email: string;
-  email_link: string;
-  ph_number: string;
-  whatsapp_link: string;
-  linkedin_link: string;
-  instagram_link: string;
-  twitter_link: string;
-  address: string;
-  developer_link: string;
-}
+import { useContactContext } from "@/lib/contact-context";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -25,6 +14,7 @@ export default function Contact() {
     email: "",
     message: "",
   });
+  const contactInfo = useContactContext()
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -113,9 +103,9 @@ export default function Contact() {
                     <h4 className="text-lg font-medium text-white mb-1">
                       Email
                     </h4>
-                    <p className="text-gray-400 mb-3">contact@equigle.com</p>
+                    <p className="text-gray-400 mb-3">{contactInfo?.email}</p>
                     <a
-                      href="mailto:contact@equigle.com"
+                      href={contactInfo?.email_link}
                       className="inline-flex items-center text-sm text-purple-400 hover:text-purple-300 transition-colors"
                     >
                       Send an email <Send className="ml-1 h-3 w-3" />
@@ -147,9 +137,9 @@ export default function Contact() {
                     <h4 className="text-lg font-medium text-white mb-1">
                       WhatsApp
                     </h4>
-                    <p className="text-gray-400 mb-3">+1 (555) 123-4567</p>
+                    <p className="text-gray-400 mb-3">{contactInfo?.ph_number}</p>
                     <a
-                      href="https://wa.me/15551234567"
+                      href={contactInfo?.whatsapp_link}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center text-sm text-purple-400 hover:text-purple-300 transition-colors"
@@ -168,7 +158,7 @@ export default function Contact() {
               </h4>
               <div className="flex space-x-4">
                 <a
-                  href="https://linkedin.com"
+                  href={contactInfo?.linkedin_link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full hover:bg-purple-900/30 hover:border-purple-500/30 transition-all"
@@ -176,7 +166,7 @@ export default function Contact() {
                   <Linkedin className="h-6 w-6 text-white" />
                 </a>
                 <a
-                  href="https://instagram.com"
+                  href={contactInfo?.instagram_link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full hover:bg-purple-900/30 hover:border-purple-500/30 transition-all"
@@ -184,7 +174,7 @@ export default function Contact() {
                   <Instagram className="h-6 w-6 text-white" />
                 </a>
                 <a
-                  href="https://twitter.com"
+                  href={contactInfo?.twitter_link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full hover:bg-purple-900/30 hover:border-purple-500/30 transition-all"

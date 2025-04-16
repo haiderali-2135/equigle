@@ -4,24 +4,28 @@ import { motion } from "framer-motion";
 import { JSX } from "react";
 import Link from "next/link";
 import { Button } from "./button";
+import { getCategoryIcon } from "@/utils/categoryIcons";
 
 interface AgentCardProps {
-  id: number;
+  P_id: string;
   title: string;
   description: string;
-  icon: JSX.Element;
-  color: string;
+  icon: string;
   imageUrl: string;
+  category: string;
 }
 
 export function AgentCard({
-  id,
+  P_id,
   title,
   description,
   icon,
-  color,
   imageUrl,
+  category,
 }: AgentCardProps) {
+
+  const IconComponent = getCategoryIcon(category)
+
   return (
     <motion.div
       whileHover={{ y: -8, scale: 1.02 }}
@@ -36,14 +40,14 @@ export function AgentCard({
           style={{ backgroundImage: `url(${imageUrl})` }}
         >
           <div
-            className={`absolute inset-0 bg-gradient-to-br ${color} mix-blend-multiply`}
+            className={`absolute inset-0  mix-blend-multiply`}
           />
         </div>
 
         {/* Card content */}
         <CardContent className="p-6 flex flex-col h-full relative">
           <div className="p-3 rounded-full bg-white/20 backdrop-blur-sm w-fit mb-4">
-            {icon}
+           <IconComponent />
           </div>
           <h3 className="font-semibold text-lg mb-2 text-white">{title}</h3>
           <p className="text-sm text-white/90 flex-grow">{description}</p>
@@ -53,7 +57,7 @@ export function AgentCard({
             style={{ cursor: "pointer" }}
           >
             <span>
-              <Link href={`/project/${id}`}>Learn more</Link>{" "}
+              <Link href={`/project/${P_id}`}>Learn more</Link>{" "}
             </span>
             <svg
               xmlns="http://www.w3.org/2000/svg"

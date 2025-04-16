@@ -17,43 +17,43 @@ export default function EditSitePage() {
   const editSiteContent = (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight text-equigle-800">Edit Site Content</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-purple-800">Edit Site Content</h1>
       </div>
 
-      <Card className="border-equigle-200">
+      <Card className="border-purple-200">
         <CardHeader>
-          <CardTitle className="text-equigle-800">Site Management</CardTitle>
+          <CardTitle className="text-purple-800">Site Management</CardTitle>
           <CardDescription>
             Update your website content including partners, testimonials, projects, and contact information
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-            <TabsList className="grid w-full grid-cols-4 bg-equigle-100">
+            <TabsList className="grid w-full grid-cols-4 bg-purple-100">
               <TabsTrigger
                 value="partners"
-                className="flex items-center gap-2 data-[state=active]:bg-equigle-600 data-[state=active]:text-white"
+                className="flex items-center gap-2 data-[state=active]:bg-purple-600 data-[state=active]:text-white"
               >
                 <Users className="h-4 w-4" />
                 <span className="hidden sm:inline">Partners</span>
               </TabsTrigger>
               <TabsTrigger
                 value="testimonials"
-                className="flex items-center gap-2 data-[state=active]:bg-equigle-600 data-[state=active]:text-white"
+                className="flex items-center gap-2 data-[state=active]:bg-purple-600 data-[state=active]:text-white"
               >
                 <MessageCircle className="h-4 w-4" />
                 <span className="hidden sm:inline">Testimonials</span>
               </TabsTrigger>
               <TabsTrigger
                 value="projects"
-                className="flex items-center gap-2 data-[state=active]:bg-equigle-600 data-[state=active]:text-white"
+                className="flex items-center gap-2 data-[state=active]:bg-purple-600 data-[state=active]:text-white"
               >
                 <Briefcase className="h-4 w-4" />
                 <span className="hidden sm:inline">Projects</span>
               </TabsTrigger>
               <TabsTrigger
                 value="contact"
-                className="flex items-center gap-2 data-[state=active]:bg-equigle-600 data-[state=active]:text-white"
+                className="flex items-center gap-2 data-[state=active]:bg-purple-600 data-[state=active]:text-white"
               >
                 <Phone className="h-4 w-4" />
                 <span className="hidden sm:inline">Contact</span>

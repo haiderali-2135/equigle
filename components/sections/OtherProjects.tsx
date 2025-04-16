@@ -6,6 +6,7 @@ import { useProjectContext } from "@/lib/projects-context";
 import { motion } from "framer-motion";
 import { HoverEffect } from "../ui/card-hover-effect";
 import { Pointer } from "lucide-react";
+import { getCategoryIcon } from "@/utils/categoryIcons";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -31,6 +32,7 @@ function OtherProjects() {
   const paginatedProjects = projectsData
     .filter((project) => project.category !== "AI Agents")
     .slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+  
 
   // Handle page change
   const handlePageChange = (newPage: number) => {

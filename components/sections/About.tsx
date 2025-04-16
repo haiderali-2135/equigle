@@ -44,22 +44,12 @@ function About() {
   }, [isVisible, hasNotAnimated]);
 
   return (
-    // image 2 ......
-    // <div className='relative w-full flex flex-col items-center justify-center overflow-hidden snap-start bg-cover bg-center bg-no-repeat'
-    // style={{ backgroundImage: "url('https://plus.unsplash.com/premium_photo-1670179693443-7c33b1afa788?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)" }}
-    // >
-
-    // no image .....
+    
 
     <div
       className="relative w-full flex flex-col items-center justify-center overflow-hidden snap-start"
       id="about-section"
     >
-      {/* <BackgroundBeamsWithCollision className='min-h-screen'>  */}
-      {/* <div className="absolute inset-0">
-      <FloatingPaths position={-10} />
-      <FloatingPaths position={0.5} />
-    </div> */}
 
       <div className="min-h-screen relative z-10 container mx-auto px-4 sm:px-6 md:px-8 py-[5vh] md:py-[3vh] flex flex-col items-center justify-center gap-[5%] ">
         <motion.div

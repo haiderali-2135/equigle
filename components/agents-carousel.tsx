@@ -11,6 +11,7 @@ import {
 import { motion } from "framer-motion";
 import { AgentCard } from "./ui/agent-card";
 
+
 interface AgentsCarouselProps {
   onAgentClick?: (agentId: number) => void;
 }
@@ -95,16 +96,16 @@ export function AgentsCarousel({ onAgentClick }: AgentsCarouselProps) {
               (project) => project.category === "AI Agents"
             ).map((project) => (
               <CarouselItem
-                key={project.id}
+                key={project.P_id}
                 className="pl-4 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
               >
                 <AgentCard
-                  id={project.id}
+                  P_id={project.P_id}
                   title={project.title}
                   description={project.description}
                   icon={project.icon}
-                  color={getOrderedGradientColor(project.id - 1)}
                   imageUrl={project.imageUrl}
+                  category={project.category}
                 />
               </CarouselItem>
             ))}

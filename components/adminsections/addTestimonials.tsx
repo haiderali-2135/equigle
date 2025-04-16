@@ -1,8 +1,10 @@
 "use client"
 
 import type React from "react"
+
 import { useState, useEffect } from "react"
 import { Trash2, Loader2, User } from "lucide-react"
+import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,7 +14,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { toast } from "sonner"
 
 interface Testimonial {
   T_id: string
@@ -304,7 +305,7 @@ export default function TestimonialsSection() {
               />
               {reviewError && <p className="text-sm text-red-500">{reviewError}</p>}
             </div>
-            <Button type="submit" disabled={isSubmitting} className="bg-equigle-600 hover:bg-equigle-700 text-white">
+            <Button type="submit" disabled={isSubmitting} className="bg-purple-600 hover:bg-purple-700 text-white">
               {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Add Testimonial
             </Button>

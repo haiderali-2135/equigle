@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
+import { getCategoryIcon } from "@/utils/categoryIcons";
 
 export const HoverEffect = ({
   items,
@@ -19,17 +20,12 @@ export const HoverEffect = ({
         className
       )}
     >
-      {items.map((item, idx) => (
-        // <Link
-        //   href={item?.link || "#"}
-        //   key={item?.id || idx}
-        //   className="relative group block p-2 h-full w-full"
-        //   onMouseEnter={() => setHoveredIndex(idx)}
-        //   onMouseLeave={() => setHoveredIndex(null)}
-        // >
+      {items.map((item, idx) => {
+        const IconComponent = getCategoryIcon(item.category)
+        return(
         <div
           className="relative group block p-2 h-full w-full"
-          key={item?.id || idx}
+          key={item?.P_id || idx}
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
@@ -50,11 +46,12 @@ export const HoverEffect = ({
               />
             )}
           </AnimatePresence>
-          <Link href={`/project/${item.id}`}>
+          <Link href={`/project/${item.P_id}`}>
             <Card>
               <CardTitle>
                 <div className="flex flex-col items-center justify-center ">
-                  {item.icon && item.icon}
+                  {/* {getCategoryIcon(item.icon)} */}
+                    <IconComponent />
                 </div>
                 <div className="">{item.title || "Untitled"}</div>
               </CardTitle>
@@ -65,8 +62,11 @@ export const HoverEffect = ({
             </Card>
           </Link>
         </div>
+
+
         // </Link>
-      ))}
+      )
+      })}
     </div>
   );
 };
