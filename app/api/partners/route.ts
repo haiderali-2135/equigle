@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { generateId } from "@/lib/generateId";
 import { Partner } from "@/model/Partner";
 import dbConnect from "@/lib/dbConnect";
+import { verifyAdminToken } from "@/lib/auth";
 
 export async function GET() {
   await dbConnect();
@@ -9,7 +10,12 @@ export async function GET() {
   return NextResponse.json(partners);
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  const tokenCheckResponse = await verifyAdminToken(req);
+    if (tokenCheckResponse) {
+      return tokenCheckResponse;
+    }
+    
   await dbConnect();
   try {
     const data = await req.json();
@@ -39,7 +45,12 @@ export async function POST(req: Request) {
   }
 }
 
-export async function DELETE(req: Request) {
+export async function DELETE(req: NextRequest) {
+  const tokenCheckResponse = await verifyAdminToken(req);
+    if (tokenCheckResponse) {
+      return tokenCheckResponse;
+    }
+    
   await dbConnect();
   try {
     const { P_id } = await req.json();

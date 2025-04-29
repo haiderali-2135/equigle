@@ -1,6 +1,12 @@
-import { NextResponse } from "next/server";
+import { verifyAdminToken } from "@/lib/auth";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST() {
+export async function POST(req: NextRequest) {
+  const tokenCheckResponse = await verifyAdminToken(req);
+  if (tokenCheckResponse) {
+    return tokenCheckResponse;
+  }
+  
   try {
     const response = NextResponse.json(
       { success: true, message: "Logged out successfully" },

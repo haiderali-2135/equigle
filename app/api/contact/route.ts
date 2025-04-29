@@ -1,14 +1,19 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { generateId } from "@/lib/generateId";
 import { Contact } from "@/model/Contact";
 import dbConnect from "@/lib/dbConnect";
+import { verifyAdminToken } from "@/lib/auth";
 
 
 // for use only once (to save data in the DB) later use PUT method to edit any details;
 
-export async function PUT(req: Request) {
+export async function PUT(req: NextRequest) {
+  const tokenCheckResponse = await verifyAdminToken(req);
+    if (tokenCheckResponse) {
+      return tokenCheckResponse;
+    }
+    
   await dbConnect();
-
   try {
     // remember to give the id in the front-end
     const data = await req.json();
@@ -42,7 +47,6 @@ export async function PUT(req: Request) {
 
 export async function GET() {
   await dbConnect();
-
   try {
     const contact = await Contact.findOne();
 

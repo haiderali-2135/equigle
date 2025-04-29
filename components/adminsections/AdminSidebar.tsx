@@ -60,7 +60,7 @@ export default function AdminSidebar({ children }: AdminSidebarProps) {
   return (
     <SidebarProvider>
       <div className="flex min-h-screen">
-        <Sidebar variant="sidebar" collapsible="icon" className="bg-gray-50 text-gray-900">
+        <Sidebar variant="sidebar" collapsible="icon" className="bg-gray-50 text-gray-900 mt-[3%]">
           <SidebarHeader className="flex items-center border-b border-gray-200 px-4 py-2">
             <Link href="/admin" className="flex items-center gap-2">
               <div className="rounded-full bg-purple-100 p-1">

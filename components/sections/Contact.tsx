@@ -38,16 +38,29 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitError("");
-
+  
     try {
-      // Simulate form submission
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      // Reset form
-      setFormData({ name: "", email: "", message: "" });
+      const response = await fetch("/api/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+  
+      const data = await response.json();
+      console.log("Message sent successfully:", data);
+  
       setSubmitSuccess(true);
+      setFormData({ name: "", email: "", message: "" }); // Reset form
+  
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (error) {
+      console.error("Error submitting message:", error);
       setSubmitError(
         "There was an error submitting your message. Please try again."
       );
@@ -55,6 +68,7 @@ export default function Contact() {
       setIsSubmitting(false);
     }
   };
+  
 
   return (
     <section

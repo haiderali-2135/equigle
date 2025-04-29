@@ -9,8 +9,11 @@ export async function middleware(req: NextRequest) {
   const token = req.cookies.get("admin_token")?.value;
   const { pathname } = req.nextUrl;
 
+
+
   // Allow access to login page always
   if (pathname.startsWith("/adminlogin")) {
+    console.log("[Middleware] JWT_SECRET:", process.env.JWT_SECRET);
     return NextResponse.next();
   }
 

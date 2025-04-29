@@ -1,7 +1,8 @@
 import { Testimonial } from "@/model/Testimonial";
 import dbConnect from "@/lib/dbConnect";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { generateId } from "@/lib/generateId";
+import { verifyAdminToken } from "@/lib/auth";
 
 export async function GET() {
   await dbConnect();
@@ -22,7 +23,12 @@ export async function GET() {
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  const tokenCheckResponse = await verifyAdminToken(req);
+    if (tokenCheckResponse) {
+      return tokenCheckResponse;
+    }
+    
   await dbConnect();
   try {
     const data = await req.json();
@@ -52,7 +58,12 @@ export async function POST(req: Request) {
   }
 }
 
-export async function DELETE(req: Request) {
+export async function DELETE(req: NextRequest) {
+  const tokenCheckResponse = await verifyAdminToken(req);
+    if (tokenCheckResponse) {
+      return tokenCheckResponse;
+    }
+    
   await dbConnect();
   try {
     const { T_id } = await req.json();

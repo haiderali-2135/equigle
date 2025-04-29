@@ -1,10 +1,16 @@
 import { Message } from "@/model/Message";
 import dbConnect from "@/lib/dbConnect";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { generateId } from "@/lib/generateId";
+import { verifyAdminToken } from "@/lib/auth";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   await dbConnect();
+  const tokenCheckResponse = await verifyAdminToken(req);
+    if (tokenCheckResponse) {
+      return tokenCheckResponse;
+    }
+    
   try {
     console.log("Got a get request");
 
